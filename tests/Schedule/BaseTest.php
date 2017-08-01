@@ -15,7 +15,10 @@ class BaseTest extends TestCase
 {
     public function testBaseCase()
     {
-        $this->assertTrue(true);
+        $schedule = new Schedule();
+        if ($schedule->everyMinute()) {
+            $this->assertTrue(true);
+        }
     }
 
     public function testCronCase()
