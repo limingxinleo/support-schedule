@@ -26,6 +26,9 @@ class BaseTest extends TestCase
         $this->assertTrue($schedule->cron('40 * * * *'));
         $this->assertTrue($schedule->cron('40 * 01 * *'));
         $this->assertTrue($schedule->cron('* * 01 08 02'));
+        $this->assertTrue($schedule->cron('*/2 * * * *'));
+        $this->assertTrue($schedule->cron('40,*/3 * * * *'));
+        $this->assertTrue($schedule->cron('*/3,40 * * * 2'));
     }
 
     public function testDailyCase()
@@ -55,6 +58,36 @@ class BaseTest extends TestCase
         $date = '33 10 01 08 2';
         $schedule = new Schedule($date);
         $this->assertTrue($schedule->everyMinute());
+    }
+
+    public function testEveryFiveMinuteCase()
+    {
+        $date = '15 10 01 08 2';
+        $schedule = new Schedule($date);
+        $this->assertTrue($schedule->everyFiveMinute());
+
+        $date = '18 10 01 08 2';
+        $schedule = new Schedule($date);
+        $this->assertFalse($schedule->everyFiveMinute());
+    }
+
+    public function testHourlyCase()
+    {
+        $date = '18 10 01 08 2';
+        $schedule = new Schedule($date);
+        $this->assertFalse($schedule->hourly());
+
+        $date = '00 12 01 08 2';
+        $schedule = new Schedule($date);
+        $this->assertTrue($schedule->hourly());
+    }
+
+    public function testHourlyAtCase()
+    {
+        $date = '22 10 01 08 2';
+        $schedule = new Schedule($date);
+        $this->assertFalse($schedule->hourlyAt(18));
+        $this->assertTrue($schedule->hourlyAt(22));
     }
 
 }

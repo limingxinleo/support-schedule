@@ -25,7 +25,7 @@ class Schedule
         $expected = explode(' ', $expression);
         $actual = explode(' ', $this->now);
         foreach ($expected as $i => $v) {
-            if ($v != '*' && intval($expected[$i]) !== intval($actual[$i])) {
+            if ($v != '*' && !$this->equal($expected[$i], $actual[$i])) {
                 return false;
             }
         }
@@ -45,6 +45,38 @@ class Schedule
     public function everyMinute()
     {
         return $this->cron("* * * * *");
+    }
+
+    public function everyFiveMinute()
+    {
+        return $this->cron("*/5 * * * *");
+    }
+
+    public function hourly()
+    {
+        return $this->cron("0 * * * *");
+    }
+
+    public function hourlyAt($minute)
+    {
+        return $this->cron("{$minute} * * * *");
+    }
+
+    public function equal($expected, $actual)
+    {
+        if (is_numeric($expected)) {
+            return intval($expected) === intval($actual);
+        }
+        $expectedArr = explode(',', $expected);
+        foreach ($expectedArr as $item) {
+            if (is_numeric($item) && intval($item) === intval($actual)) {
+                return true;
+            }
+            if (Str::startsWith($item, '*/') && is_int($actual / intval(str_replace('*/', '', $item)))) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
