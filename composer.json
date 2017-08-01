@@ -1,0 +1,17 @@
+{
+    "name": "limingxinleo/support-schedule",
+    "description": "This is support for cron schedule",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "limx\\": "src"
+        }
+    },
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    }
+}
